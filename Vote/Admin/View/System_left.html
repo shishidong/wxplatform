@@ -1,0 +1,105 @@
+﻿<!--
+编程中我们会遇到多少挫折？表放弃，沙漠尽头必是绿洲!
+---------------------------------------------------------------------------------------------------
+Title：网络投票管理系统
+Design：Webster 西瓜  Blog：http://www.580bang.com/  QQ:312549912
+CopyRight：江苏七八九网络科技有限公司
+Site：http://www.js789.com.cn/
+Desc：江苏七八九网络科技有限公司专注于微信运营，微信开发，企业网站制作，线下活动策划与运作！我们有专业的运营团队，在微信领域有着3年的运营沉淀经验！ 
+---------------------------------------------------------------------------------------------------
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>网络投票管理系统</title>
+<link rel="stylesheet" href="__CSS__/style.css"/>
+<link rel="stylesheet" href="__CSS__/font-awesome.min.css"/>
+<script src="__JS__/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){	
+	//导航切换
+	$(".menuson li").click(function(){
+		$(".menuson li.active").removeClass("active")
+		$(this).addClass("active");
+	});
+	$('.title').click(function(){
+		var $ul = $(this).next('ul');
+		$('dd').find('ul').slideUp();
+		if($ul.is(':visible')){
+			$(this).next('ul').slideUp();
+		}else{
+			$(this).next('ul').slideDown();
+		}
+	});
+})	
+</script>
+</head>
+<body style="background:#f0f9fd;">
+	<div class="lefttop"><span></span>控制面板</div>
+    <dl class="leftmenu">
+    <dd>
+    <div class="title">
+    <span><img src="__IMAGES__/gailan.png" /></span>概览
+    </div>
+    <ul class="menuson">
+        <li class="active"><cite></cite><a href="{:U('System/index')}" target="rightFrame">欢迎页</a><i></i></li>
+    </ul>     
+    </dd>  
+    <dd>
+    <div class="title">
+    <span><img src="__IMAGES__/xtsz.png"/></span>基本设置
+    </div>
+    	<ul class="menuson">
+	        <li><cite></cite><a href="{:U('System/setsite')}" target="rightFrame">站点配置</a><i></i></li>
+	        <if condition="($Think.session.sys_name eq 'Webster') or ($Think.session.sys_name eq 'admin')">
+	        <li><cite></cite><a href="{:U('System/setscreen')}" target="rightFrame">大屏设置</a><i></i></li>
+	        <else /></if>
+        </ul>    
+    </dd>
+    <if condition="($Think.session.sys_name eq 'Webster') or ($Think.session.sys_name eq 'admin')">
+    <dd>
+    <div class="title">
+    <span><img src="__IMAGES__/toupiao.png" /></span>报名管理
+    </div>
+    	<ul class="menuson">
+        	<li><cite></cite><a href="{:U('System/addvote')}" target="rightFrame">添加报名</a><i></i></li>
+        	<li><cite></cite><a href="{:U('System/votelist')}" target="rightFrame">列表管理</a><i></i></li>
+      	</ul>     
+    </dd> 
+    <else /></if>
+    <if condition="($Think.session.sys_name eq 'Webster') or ($Think.session.sys_name eq 'admin2')">
+    <dd>
+    <div class="title">
+    <span><img src="__IMAGES__/toupiao.png" /></span>签到管理
+    </div>
+    	<ul class="menuson">
+        	<li><cite></cite><a href="{:U('System/signinlist')}" target="rightFrame">人员信息管理</a><i></i></li>
+      	</ul>     
+    </dd>    
+    <else /></if>
+    <if condition="$Think.session.sys_name eq 'Webster'">
+    <dd>
+    <div class="title">
+    <span><img src="__IMAGES__/huiyuan.png" /></span>管理员
+    </div>
+    	<ul class="menuson">
+       		<li><cite></cite><a href="{:U('System/adduser')}" target="rightFrame">添加管理员</a><i></i></li>
+        	<li><cite></cite><a href="{:U('System/userlist')}" target="rightFrame">管理员管理</a><i></i></li>
+        </ul>     
+    </dd>
+    
+    <dd><div class="title"><span><img src="__IMAGES__/shujuku.png" /></span>数据库</div>
+	    <ul class="menuson">
+	        <li><cite></cite><a href="{:U('Baksql/index')}" target="rightFrame">数据库备份</a><i></i></li>
+	    </ul>    
+    </dd>
+    <else /></if>
+<!--     <dd><div class="title"><span><img src="__IMAGES__/myhelp.png" /></span>帮助手册</div>
+	    <ul class="menuson">
+	        <li><cite></cite><a href="#">查看在线手册</a><i></i></li>
+	    </ul>    
+    </dd>  -->  
+    </dl>
+</body>
+</html>

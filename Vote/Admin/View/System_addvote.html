@@ -1,0 +1,134 @@
+<!--
+编程中我们会遇到多少挫折？表放弃，沙漠尽头必是绿洲!
+---------------------------------------------------------------------------------------------------
+Title：网络投票管理系统
+Design：Webster 西瓜  Blog：http://www.580bang.com/  QQ:312549912
+CopyRight：江苏七八九网络科技有限公司
+Site：http://www.js789.com.cn/
+Desc：江苏七八九网络科技有限公司专注于微信运营，微信开发，企业网站制作，线下活动策划与运作！我们有专业的运营团队，在微信领域有着3年的运营沉淀经验！ 
+---------------------------------------------------------------------------------------------------
+-->
+<!Doctype html>
+<html class="no-js">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<title>网络投票管理系统</title>
+<link rel="stylesheet" href="__CSS__/style.css"/>
+<link rel="stylesheet" href="__CSS__/jquery.datetimepicker.css"/>
+<link rel="stylesheet" href="__CSS__/font-awesome.min.css"/>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/jquery.datetimepicker.js"></script>
+<style>
+/*a  upload */
+.a-upload {
+    padding: 4px 10px;
+    height: 20px;
+    line-height: 20px;
+    position: relative;
+    cursor: pointer;
+    color: #fff;
+    background: #00bb9c;
+    border: 1px solid #00bb9c;
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1
+}
+
+.a-upload  input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer
+}
+
+.a-upload:hover {
+    color: #fff;
+    background: #00bb9c;
+    border-color: #00bb9c;
+    text-decoration: none
+}
+</style>
+</head>
+<body>
+
+	<div class="place">
+	    <span>位置：</span>
+	    <ul class="placeul">
+		    <li><a href="#">首页</a></li>
+		    <li><a href="#">投票管理</a></li>
+	    </ul>
+    </div>
+    
+    <div class="formbody">
+    
+    <div class="formtitle"><span>添加投票</span></div>
+    <form action="__SELF__" method="post" enctype="multipart/form-data" id="form">
+	    <ul class="forminfo">
+		    <li><label>姓名：</label><input name="name" type="text" class="dfinput" placeholder="请填写姓名" datatype="*" nullmsg="姓名不能为空"/></li>
+		    <li><label>号牌：</label><input name="mynum" type="text" class="dfinput" placeholder="请填写号牌" datatype="*" nullmsg="号牌不能为空"/></li>
+		    <li><label>手机号码：</label><input name="phone" type="text" class="dfinput" placeholder="请填写手机号码" datatype="*" nullmsg="手机号码不能为空"/></li>
+		    <li><label>头像：</label>
+			    <a href="javascript:;" class="a-upload">
+				    <input type="file" name='touxiang' onchange='PreviewImage(this)'>点击上传头像
+				</a>
+			</li>
+		    <li id="imgPreview"><label>预览：</label><img id="img1" src="__IMAGES__/nopic.jpg" width="120" height="120" /></li>
+		    <li><label>&nbsp;</label><input type="submit" class="btn" value="确认保存"/></li>
+	    </ul>
+    </form>
+    
+    </div>
+<!-- 编辑器 -->
+<script src="__JS__/Validform_v5.3.2_min.js"></script>
+<script>
+$(document).ready(function(e) {
+    $("#form").Validform({
+        tiptype:3,
+        label:".label",
+        showAllError:true,
+    }); 
+});
+</script>
+<script>
+$('#datetimepicker').datetimepicker();
+</script>
+<script>
+ function PreviewImage(imgFile)
+ {
+    var filextension=imgFile.value.substring(imgFile.value.lastIndexOf("."),imgFile.value.length);
+    filextension=filextension.toLowerCase();
+    if ((filextension!='.jpg')&&(filextension!='.gif')&&(filextension!='.jpeg')&&(filextension!='.png')&&(filextension!='.bmp'))
+    {
+        alert("对不起，系统仅支持标准格式的照片，请您调整格式后重新上传，谢谢 !");
+        imgFile.focus();
+    }
+    else
+    {
+        var path;
+        if(document.all)//IE
+        {
+            imgFile.select();
+            path = document.selection.createRange().text;
+            document.getElementById("imgPreview").innerHTML="";
+            document.getElementById("imgPreview").style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled='true',sizingMethod='scale',src=\"" + path + "\")";//使用滤镜效果      
+        }
+        else//FF
+        {
+            path=window.URL.createObjectURL(imgFile.files[0]);// FF 7.0以上
+            //path = imgFile.files[0].getAsDataURL();// FF 3.0
+            document.getElementById("imgPreview").innerHTML = "<label>预览：</label><img id='img1' width='120px' height='120px' src='"+path+"'/>";
+            //document.getElementById("img1").src = path;
+        }
+    }
+ }
+ </script>
+</body>
+</html>

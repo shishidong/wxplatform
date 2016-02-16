@@ -1,0 +1,205 @@
+<!--
+编程中我们会遇到多少挫折？表放弃，沙漠尽头必是绿洲!
+---------------------------------------------------------------------------------------------------
+Title：企业网站管理系统
+Design：Webster 西瓜  Blog：http://www.580bang.com/  QQ:312549912
+CopyRight：江苏七八九网络科技有限公司
+Site：http://www.js789.com.cn/
+Desc：江苏七八九网络科技有限公司专注于微信运营，微信开发，企业网站制作，线下活动策划与运作！我们有专业的运营团队，在微信领域有着3年的运营沉淀经验！ 
+---------------------------------------------------------------------------------------------------
+-->
+<!Doctype html>
+<html class="no-js">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<title>企业网站管理后台</title>
+<link rel="stylesheet" href="__CSS__/style.css"/>
+<script src="__JS__/jquery.min.js"></script>
+</head>
+<body style="padding-bottom:20px;">
+<section class="place">
+   <span>位置：</span>
+   <ul class="placeul">
+	   <li><a href="#">首页</a></li>
+	   <li><a href="#">投票管理</a></li>
+	   <li><a href="#">列表</a></li>
+   </ul>
+</section>
+    
+<section class="rightinfo">
+<section style="line-height:40px;color:red;font-size:16px;">*投票删除操作不可逆！</section>
+<section class="tools">
+	<ul class="toolbar">
+	   <li><a href="#" onclick="javascript:deleSeltedRecords()"><span><img src="__IMAGES__/t03.png" /></span>批量删除</a></li>
+	   <li><a href="#" onclick="javascript:checkvotes()"><span><img src="__IMAGES__/t03.png" /></span>批量审核</a></li>
+   	</ul>
+</section>
+<!-- 列表 -->
+<table class="tablelist imgtable">
+	<thead>
+		<tr>
+		    <th><input type="checkbox" id="selAll" onclick="selectAll();" /></th>
+		    <th>头像</th>
+		    <th>姓名</th>
+		    <th>号牌</th>
+		    <th>手机号码</th>
+		    <th>提交时间</th>
+		    <th><button style="background-color:#43CD80;height:30px;width:60px;color:#fff" onclick="$('#sortform').submit()" >排序</button></th>
+		    <th>当前票数</th>
+		    <th>状态</th>
+		    <th>操作</th>
+	    </tr>
+    </thead>
+    <tbody id="allcheck">
+    <form action="{:U('System/editVotesort')}" method="post" id="sortform">
+    <volist name="list" id="vo">
+	    <tr>
+	    	
+		    <td><input type="checkbox" name="checkAll" id="checkAll" value="{$vo.id}" onclick="setSelectAll();" <if condition="$vo.status eq 1">disabled="disabled"</if>/></td>
+            <td class="imgtd"><img style="width:150px;height:150px" src="{$vo.touxiang}"></td>
+		    <td>{$vo.name}</td>
+		    <td>{$vo.mynum}</td>
+		    <td>{$vo.phone}</td>
+		    <td>{$vo.time}</td>
+		    <td>
+				<input type="number" style="border:1px solid #c9c9c9;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;width:60px;height:25px;padding:3px;" class="usort" name="usort{$vo.id}" value="{$vo.usort}" />
+			</td>
+		    <td>{$vo.count}</td>
+		    <td><if condition="$vo.status eq 1"><b style="color:green">已审核</b><else /><b style="color:red">未审核</b></if></td>
+		    <td style="text-align:center;"><a href="{:U('System/editvote')}?id={$vo.id}" class="tablelink">查看</a>&nbsp;<a href="{:U('System/whovote')}?id={$vo.id}" class="tablelink">投票列表</a></td>
+	    </tr> 
+	</volist>  
+	</form>     
+    </tbody>
+</table>
+<!-- 分页 -->
+<div class="clear"></div>
+<section class="manu">{$page}</section>
+</section>
+<script type="text/javascript">
+	$('.tablelist tbody tr:odd').addClass('odd');
+</script>
+<script> 
+//选中全选按钮，下面的checkbox全部选中 
+var selAll = document.getElementById("selAll"); 
+function selectAll() 
+{ 
+  var obj = document.getElementsByName("checkAll"); 
+  if(document.getElementById("selAll").checked == false) 
+  { 
+	  for(var i=0; i<obj.length; i++){ 
+	    //obj[i].checked=false; 
+	  	if (obj[i].type == "checkbox" && obj[i].disabled==false ){
+	      obj[i].checked = false;      
+	     }
+	  } 
+  }else{ 
+	  for(var i=0; i<obj.length; i++){	  
+	    //obj[i].checked=true; 
+		  if (obj[i].type == "checkbox" && obj[i].disabled==false){
+		      obj[i].checked = true;      
+		     }  
+	  }	
+  }  
+} 
+//当选中所有的时候，全选按钮会勾上 
+function setSelectAll() 
+{ 
+	var obj=document.getElementsByName("checkAll"); 
+	var count = obj.length; 
+	var selectCount = 0; 
+	
+	for(var i = 0; i < count; i++){ 
+		if(obj[i].checked == true) 
+		{ 
+		selectCount++;	
+		} 
+	} 
+	if(count == selectCount){	
+		document.all.selAll.checked = true; 
+	}else{ 
+		document.all.selAll.checked = false; 
+	} 
+} 
+//批量删除
+function deleSeltedRecords(){  
+        var chckBox = document.getElementsByName("checkAll");  
+        var num = chckBox.length;  
+        var ids = "";  
+        for(var index =0 ; index<num ; index++){  
+            if(chckBox[index].checked){  
+                ids += chckBox[index].value + ",";                
+            }  
+        } 
+         if(ids!=""){  
+            if(window.confirm("确定删除所选记录？")){  
+                $.ajax({
+                	type: "POST",
+                    url: '{:U("System/delvotes")}',
+                    data: {ids:ids},
+                    beforeSend:function(){
+                    	jQuery("body").append("<div class='fullbg'></div>");
+                        jQuery(".fullbg").css("display","block");
+                     },
+                    success : function(data){
+                    	//隐藏加载动画
+                    	jQuery(".fullbg").css("display","none");
+                    	if(data=='success'){
+                    		location.reload();
+                    	}else{
+                    		alert("系统错误，删除失败");
+                    	}  
+                    },  
+                    error : function(data){  
+                        alert("系统错误，删除失败");  
+                    }  
+                });  
+            }  
+        }else{  
+            alert("请选择要删除的记录");  
+        } 
+}
+//批量审核
+function checkvotes(){  
+        var chckBox = document.getElementsByName("checkAll");  
+        var num = chckBox.length;  
+        var ids = "";  
+        for(var index =0 ; index<num ; index++){  
+            if(chckBox[index].checked){  
+                ids += chckBox[index].value + ",";                
+            }  
+        } 
+         if(ids!=""){  
+            if(window.confirm("确定审核所选记录？")){  
+                $.ajax({
+                	type: "POST",
+                    url: '{:U("System/checkvotes")}',
+                    data: {ids:ids},
+                    beforeSend:function(){
+                    	jQuery("body").append("<div class='fullbg'></div>");
+                        jQuery(".fullbg").css("display","block");
+                     },
+                    success : function(data){
+                    	//隐藏加载动画
+                    	jQuery(".fullbg").css("display","none");
+                    	if(data=='success'){
+                    		location.reload();
+                    	}else{
+                    		alert("系统错误，删除失败");
+                    	}  
+                    },  
+                    error : function(data){  
+                        alert("系统错误，删除失败");  
+                    }  
+                });  
+            }  
+        }else{  
+            alert("请选择要审核的记录");  
+        } 
+}
+</script> 
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html class="no-js">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="{$siteinfo.sitedesc}">
+<meta name="keywords" content="{$siteinfo.sitekeywords}">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>现场签到</title>
+<!-- Set render engine for 360 browser -->
+<meta name="renderer" content="webkit">
+<!-- No Baidu Siteapp-->
+<meta http-equiv="Cache-Control" content="no-siteapp"/>
+<!-- Add to homescreen for Chrome on Android -->
+<meta name="mobile-web-app-capable" content="yes">
+<!-- Add to homescreen for Safari on iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="webster"/>
+<meta name="msapplication-TileColor" content="#0e90d2">
+<link rel="stylesheet" href="__PUBLIC__/Static/Css/amazeui.min.css">
+<style>
+body{padding-top:180px;position: relative;background: url(__PUBLIC__/Static/Images/qiandaobg.jpg) no-repeat top center #ededed;background-size:cover; }
+.am-modal-no-btn .am-modal-dialog {
+    border-radius: 3px;
+    border-bottom: none;
+	color:#eb4f38;
+}
+</style>
+</head>
+<body>
+<section class="container"> 
+<section class="am-container am-animation-slide-bottom" style="max-width:85%;padding-top:20px;color:#fff">
+<form class="am-form">
+  <fieldset>
+  <p style="font-size:20px;">请填写信息,完成签到</p>	
+    <div class="am-form-group">
+      <label for="qd_name">您的姓名</label>
+      <input type="text" class="am-input-lg" id="qd_name" placeholder="输入您的姓名">
+    </div>
+    <p style="font-size:12px;">姓名以邀请函所填信息为准</p><br><br>
+    <button type="button" id="qiandao" style="padding:15px;" class="am-btn am-btn-warning am-radius am-btn-block">完成签到</button>
+</form>
+<br><br>
+<p style="text-align:center"><a style="color:#fff" data-am-modal="{target: '#qdcan'}">[查看我的参会信息]</a></p>
+</section>
+</section> 
+<!-- 成功提示层 -->
+<div class="am-modal am-modal-no-btn" tabindex="-1" id="qdok">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd"><img style="width:35px;height:35px" src="__PUBLIC__/Static/Images/sign-check-icon.png">&nbsp;&nbsp;恭喜您，签到成功！
+    </div>
+    <div class="am-modal-bd">
+      <p style="color:#000;text-align:left;margin-left:25px;">您的座位号：</p>
+      <p id="zuowei" style="font-size:24px;"></p>
+    </div>
+  </div>
+</div>
+<!-- 签过到提示层 -->
+<div class="am-modal am-modal-no-btn" tabindex="-1" id="qdyes">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd"><img style="width:35px;height:35px" src="__PUBLIC__/Static/Images/sign-check-icon.png">&nbsp;&nbsp;您好，您已签过到啦！
+    </div>
+    <div class="am-modal-bd">
+      <p style="color:#000;text-align:left;margin-left:25px;">您的座位号：</p>
+      <p id="zuowei_yes" style="font-size:24px;"></p>
+    </div>
+  </div>
+</div>
+<!-- 参会信息提示层 -->
+<div class="am-modal am-modal-no-btn" tabindex="-1" id="qdcan">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd"><php>echo I('COOKIE.qd_name')</php> 您的参会信息！
+    </div>
+    <div class="am-modal-bd">
+    	<if condition="I('COOKIE.qd_name') neq ''">
+    	<p style="color:#000;text-align:left;margin-left:25px;">您的座位号：</p>
+      	<p style="font-size:24px;"><php>echo I('COOKIE.qd_zuowei')</php></p>
+	 	<else />
+	 	<p style="font-size:24px;">还没有您的参会信息！</p>
+	 	</if>
+      
+    </div>
+  </div>
+</div>
+<!-- 失败提示层 -->
+<div class="am-modal am-modal-no-btn" tabindex="-1" id="qderror">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd" style="font-size:13px;"><img style="width:35px;height:35px" src="__PUBLIC__/Static/Images/sign-warning-icon.png">&nbsp;&nbsp;签到失败，请联系现场工作人员！
+    </div>
+    <div class="am-modal-bd">
+      	<a href="#" data-am-modal-close>[关闭]</a>
+    </div>
+  </div>
+</div>
+<!-- js -->
+<script src="__PUBLIC__/Static/Js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/Static/Js/amazeui.min.js"></script>
+<script src="__PUBLIC__/Static/Js/app.js"></script>
+<script src="__PUBLIC__/Layer/layer.min.js"></script>
+<script>
+$("#qiandao").click(function(){
+	var qd_name = document.getElementById("qd_name").value;
+	var $qdok = $('#qdok');
+	var $qdyes = $('#qdyes');
+	var $qderror = $('#qderror');
+	if (qd_name == '' || qd_name == null || qd_name == undefined) {
+		layer.msg('姓名不能为空！');
+		return false
+	}else{
+		//请求后台签到
+		$.get("{:U('Index/qiandao')}",{qd_name:qd_name},function(data){
+			if(data=='0000'){
+				layer.msg('本机已签过到啦！');
+				return false
+			}
+			if(data=='noopen'){
+				layer.msg('签到还未开始！');
+				return false
+			}
+			if(data=='over'){
+				layer.msg('签到已结束！');
+				return false
+			}
+			if(data=='0'){
+				$qderror.modal();
+			}else{
+				//拆分信息
+				var strs= new Array(); //定义一数组 
+				strs=data.split("_"); //字符分割 
+				if(strs[0]=='1'){
+					//赋值座位号
+					document.getElementById("zuowei").innerHTML = strs['1'];
+					//弹出成功框
+					$qdok.modal();
+					$qdok.on('close.modal.amui', function(){
+					  location.reload() 
+					});
+				}
+				if(strs[0]=='9'){
+					//赋值座位号
+					document.getElementById("zuowei_yes").innerHTML = strs['1'];
+					//弹出成功框
+					$qdyes.modal();
+				}
+			}
+		});
+	}
+});
+</script>
+</body>
+</html>

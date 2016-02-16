@@ -1,0 +1,70 @@
+<!--
+编程中我们会遇到多少挫折？表放弃，沙漠尽头必是绿洲!
+---------------------------------------------------------------------------------------------------
+Title：网络投票管理系统
+Design：Webster 西瓜  Blog：http://www.580bang.com/  QQ:312549912
+CopyRight：江苏七八九网络科技有限公司
+Site：http://www.js789.com.cn/
+Desc：江苏七八九网络科技有限公司专注于微信运营，微信开发，企业网站制作，线下活动策划与运作！我们有专业的运营团队，在微信领域有着3年的运营沉淀经验！ 
+---------------------------------------------------------------------------------------------------
+-->
+<!Doctype html>
+<html class="no-js">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<title>企业网站管理后台</title>
+<link rel="stylesheet" href="__CSS__/style.css"/>
+<link rel="stylesheet" href="__CSS__/font-awesome.min.css"/>
+<link rel="stylesheet" href="__CSS__/select.css"/>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/select-ui.min.js"></script>
+</head>
+<body>
+<div class="place">
+<span>位置：</span>
+	<ul class="placeul">
+		<li><a href="#">数据库管理</a></li>
+	</ul>
+</div>
+<div class="formbody">
+<div class="formtitle"><span>数据库备份</span></div>
+<section class="formtext">Hi，<b>{$Think.session.sys_name}</b>，欢迎您使用数据库管理功能！</section>
+<section class="tools">
+	<ul class="toolbar">
+	   <li><a href="{:U('Baksql/backup')}"><span><img src="__IMAGES__/f02.png" /></span>备份数据库</a></li>
+   	</ul>
+</section>
+<table class="tablelist">
+	<thead>
+		<tr>
+		    <th>编号</th>
+		    <th>文件名</th>
+		    <th>备份时间</th>
+		    <th>备份卷大小</th>
+		    <th>操作</th>
+	    </tr>
+    </thead>
+    <tbody>
+		<foreach name="lists" key="key" item="row">
+		    <if condition="$key gt 1">
+		        <tr>
+		            <td>{$key-1}</td>
+		            <td style="text-align: left"><a href="{:U('Baksql/index',array('Action'=>'download','file'=>$row))}">{$row}</a></td>
+		            <td>{$row|getfiletime=$datadir}</td>
+		            <td>{$row|getfilesize=$datadir}</td>
+		            <td>
+		                <a href="{:U('Baksql/downbak',array('file'=>$row))}">下载</a>
+		                <a onclick='return confirm("确定将数据库还原到当前备份吗？")' href="{:U('Baksql/restore',array('File'=>$row))}">还原</a>
+		                <a onclick="return confirm('确定删除该备份文件吗？')" href="{:U('Baksql/delbak',array('File'=>$row))}">删除</a>
+		            </td>
+		        </tr>
+		    </if>
+		</foreach>    
+    </tbody>
+</table>
+</div>
+</body>
+</html>

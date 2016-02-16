@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>{$siteinfo.sitename}投票结果图表</title>
+<link rel="stylesheet" href="__CSS__/screen.css" media="screen" type="text/css" />
+<style>
+.s-skin-container {
+    position: fixed;
+    _position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    min-width: 1000px;
+    z-index: -10;
+    background-position: center 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    zoom: 1;
+}
+.main{
+	background-color:#fff;
+	padding:15px;
+	border-radius:8px;
+	filter:alpha(opacity=70);  
+      -moz-opacity:0.7;  
+      -khtml-opacity: 0.7;  
+      opacity: 0.7; 
+	height:530px;
+	overflow-y:scroll;
+}
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar
+{
+	width: 0px;
+	height: 0px;
+	background-color: #F5F5F5;
+}
+</style>
+</head>
+<body>
+<if condition="$screen['is_music'] eq 1">
+<audio id="bgmusic" loop="loop" autoplay="autoplay">
+  <source src="{$screen.screen_music}" type="audio/ogg" />
+  <source src="{$screen.screen_music}" type="audio/mpeg" />
+Your browser does not support the audio element.
+</audio>
+</if>
+<div class="s-skin-container s-isindex-wrap" style="background-color:rgb(64, 64, 64);background-image:url(__IMAGES__/kuxuan.jpg);">  </div>
+<div id="wrapper">
+<p style="text-align:center;"><img src="{$screen.screen_logo}"></p>
+<div class="main" style="width:100%">
+<table style="width:100%" id="maincenter">
+<volist name="baoming" id="vo">
+	<tr style="width:100%">
+		<td style="width:35px;line-height:35px;"><img style="width:35px;height:35px;" src="{$vo.touxiang}"></td>
+		<td style="width:1245px">
+		<div class="skillbar clearfix " data-percent="{$vo['count']/$znum*100|round=2}%">
+			<div class="skillbar-title"><span>{$vo.name}（{$vo.count}票）</span></div>
+			<div class="skillbar-bar" style="background: #<php>echo substr(strtok(substr(strrchr($vo['touxiang'],"/"),1), '.'),-6); </php>;"></div>
+			<div class="skill-bar-percent">{$vo['count']/$znum*100|round=2}%</div>
+		</div>
+		</td>
+	</tr>
+</volist>
+</table>
+
+</div>
+<p style="text-align:center;color:#DEDE0B;font-size:24px;">快捷键控制：F键-全屏&nbsp;&nbsp;E键-退出全屏&nbsp;&nbsp;M键-音乐播放/暂停&nbsp;&nbsp;V键-弹出视频&nbsp;&nbsp;C键-关闭视频层</p>
+</div>
+<script src='__JS__/jquery.js'></script>
+<script src='__JS__/index.js'></script>
+<script src='__LAYER__/layer.min.js'></script>
+<script src='__JS__/jq.snow.js'></script>
+<script>
+$(function(){
+	$.fn.snow({ 
+		minSize: 5,		//雪花的最小尺寸
+		maxSize: 50, 	//雪花的最大尺寸
+		newOn: 300		//雪花出现的频率 这个数值越小雪花越多
+	});
+});
+</script>
+<!-- 定义快捷键 -->
+<script>
+var audio = document.getElementById('bgmusic'); 
+function hotkey()
+{
+   var a=window.event.keyCode;
+   if(a==70)//F键控制全屏
+   {
+	   requestFullScreen();
+   }
+   if(a==69)//E键控制退出全屏
+   {
+	   exitFullscreen();
+   }
+   if("{$screen['is_music']}"==1){
+	   if(a==77)//M键控制音乐
+	   {
+		 //音乐控制
+	  	if(audio.paused)                     {                 
+	        audio.play();//audio.play();// 这个就是播放  
+	     }else{
+	      	audio.pause();// 这个就是暂停
+	     }
+	   }
+   }
+   if("{$screen['is_video']}"==1){
+	   if(a==86)//V键控制视频弹出
+	   {
+		   audio.pause();
+		   layer.open({
+			    type: 2,
+			    title: false,
+			    area: ['80%', '80%'],
+			    shade: 0.8,
+			    closeBtn: 2,
+			    shadeClose: true,
+			    content: '{$screen.screen_video}',
+			    end: function(){
+			    	layer.closeAll();//二次销毁 防止多层
+			    	audio.play();
+			    }
+			});
+		   
+	   }
+	   if(a==67)//C键关闭视频层
+	   {
+		   layer.closeAll();
+		   audio.play();
+	   }
+   }
+}// end hotkey
+document.onkeydown = hotkey; //当onkeydown 事件发生时调用hotkey函数
+//进入全屏
+function requestFullScreen() {
+    var de = document.documentElement;
+    if (de.requestFullscreen) {
+        de.requestFullscreen();
+    } else if (de.mozRequestFullScreen) {
+        de.mozRequestFullScreen();
+    } else if (de.webkitRequestFullScreen) {
+        de.webkitRequestFullScreen();
+    }
+}
+//退出全屏
+function exitFullscreen() {
+    var de = document;
+    if (de.exitFullscreen) {
+        de.exitFullscreen();
+    } else if (de.mozCancelFullScreen) {
+        de.mozCancelFullScreen();
+    } else if (de.webkitCancelFullScreen) {
+        de.webkitCancelFullScreen();
+    }
+}
+</script>
+<script>
+function active(){
+	$('.skillbar').each(function(){
+		$(this).find('.skillbar-bar').animate({
+			width:$(this).attr('data-percent')
+		},2000);
+	});
+}
+window.setInterval(ajaxscreen, 5000); 
+//动态请求后台并赋给层
+function ajaxscreen() { 
+	$.get("{:U('System/ajaxscreen')}",function(data){
+		//alert(data);
+		//清空内容
+		$("#maincenter").empty();
+		$("#maincenter").html(data);
+		active();
+	});
+} 
+</script>
+</body>
+</html>

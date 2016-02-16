@@ -1,0 +1,60 @@
+<!--
+编程中我们会遇到多少挫折？表放弃，沙漠尽头必是绿洲!
+---------------------------------------------------------------------------------------------------
+Title：企业网站管理系统
+Design：Webster 西瓜  Blog：http://www.580bang.com/  QQ:312549912
+CopyRight：江苏七八九网络科技有限公司
+Site：http://www.js789.com.cn/
+Desc：江苏七八九网络科技有限公司专注于微信运营，微信开发，企业网站制作，线下活动策划与运作！我们有专业的运营团队，在微信领域有着3年的运营沉淀经验！ 
+---------------------------------------------------------------------------------------------------
+-->
+<!Doctype html>
+<html class="no-js">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<title>企业网站管理后台</title>
+<link rel="stylesheet" href="__CSS__/style.css"/>
+<link rel="stylesheet" href="__CSS__/font-awesome.min.css"/>
+<link rel="stylesheet" href="__CSS__/select.css"/>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/select-ui.min.js"></script>
+</head>
+<body>
+<div class="place">
+<span>位置：</span>
+	<ul class="placeul">
+		<li><a href="#">管理员</a></li>
+	</ul>
+</div>
+<div class="formbody">
+<div class="formtitle"><span>添加管理员</span></div>
+<section class="formtext">Hi，<b>{$Think.session.sys_name}</b>，欢迎您使用添加管理员功能！</section>
+<form action="{:U('System/adduserdo')}" method="post" enctype="multipart/form-data">
+<ul class="forminfo">
+	<li><label>登录账号<b>*</b>：</label><input name="username" type="text" class="dfinput" value="" placeholder="登录账号"/><i>只能为英文大小写和数字</i></li>
+	<li><label>登录密码<b>*</b>：</label><input name="password" type="password" class="dfinput" value="" placeholder="登录密码"/><i>只能为英文大小写和数字</i></li>
+	<li><label>状态<b>*</b></label>  
+	    <section class="vocation">
+		    <select name="status" class="select1">
+		    	<option value="1">启用</option>
+		    	<option value="0">禁用</option>
+		    </select>
+	    </section>
+    </li>
+	<li><label>备注<b>*</b>：</label><textarea name="content" style="width:400px;height:150px;border:1px solid #cccccc;padding:10px;font-size:18px;" placeholder="请输入备注"></textarea></li>
+ 	<li><label>&nbsp;</label><input name="submit" type="submit" class="btn" value="确认发布"/></li>
+</ul>
+</form>
+</div>
+<script>
+$(document).ready(function(e) {
+    $(".select1").uedSelect({
+		width : 345			  
+	});
+});
+</script>
+</body>
+</html>

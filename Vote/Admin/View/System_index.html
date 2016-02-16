@@ -1,0 +1,62 @@
+<!--
+编程中我们会遇到多少挫折？表放弃，沙漠尽头必是绿洲!
+---------------------------------------------------------------------------------------------------
+Title：网络投票管理系统
+Design：Webster 西瓜  Blog：http://www.580bang.com/  QQ:312549912
+CopyRight：江苏七八九网络科技有限公司
+Site：http://www.js789.com.cn/
+Desc：江苏七八九网络科技有限公司专注于微信运营，微信开发，企业网站制作，线下活动策划与运作！我们有专业的运营团队，在微信领域有着3年的运营沉淀经验！ 
+---------------------------------------------------------------------------------------------------
+-->
+<!Doctype html>
+<html class="no-js">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<title>企业网站管理后台</title>
+<link rel="stylesheet" href="__CSS__/style.css"/>
+<link rel="stylesheet" href="__CSS__/font-awesome.min.css"/>
+<script src="__JS__/jquery.min.js"></script>
+</head>
+<body>
+	<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+    <li><a href="#">后台首页</a></li>
+    </ul>
+    </div>
+    <div class="mainindex">
+    <div class="welinfo">
+    <span><img src="__IMAGES__/home.png" alt="欢迎使用" /></span>
+    <b>{$Think.session.sys_name} 您好，欢迎使用网络投票管理系统！</b>
+    </div>
+
+    
+    <div class="xline"></div>
+    
+    <div class="welinfo">
+    <span><img src="__IMAGES__/system.png" alt="开发团队" /></span>
+    <b>系统信息</b>
+    </div>
+    <ul class="infolist">
+    
+    <volist name="info" id="v">
+		<li><span>{$key}：</span>{$v}</li>
+	</volist> 
+    </ul>
+    
+    <div class="xline"></div>
+	<div class="welinfo">
+    <span><img src="__IMAGES__/tuandui.png" alt="开发团队" /></span>
+    <b>开发者信息</b>
+    </div>
+    <ul class="infolist">
+    <li><span>开发者：</span><a>Webster（西瓜）</a></li>
+    <li><span>E-Mail：</span><a>312549912@qq.com</a></li>
+    <li><span>Mobile：</span><a>17095135002</a></li>
+    </ul>
+    </div>
+</body>
+</html>

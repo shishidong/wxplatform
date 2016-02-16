@@ -1,0 +1,88 @@
+<!--
+编程中我们会遇到多少挫折？表放弃，沙漠尽头必是绿洲!
+---------------------------------------------------------------------------------------------------
+Title：网络投票管理系统
+Design：Webster 西瓜  Blog：http://www.580bang.com/  QQ:312549912
+CopyRight：江苏七八九网络科技有限公司
+Site：http://www.js789.com.cn/
+Desc：江苏七八九网络科技有限公司专注于微信运营，微信开发，企业网站制作，线下活动策划与运作！我们有专业的运营团队，在微信领域有着3年的运营沉淀经验！ 
+---------------------------------------------------------------------------------------------------
+-->
+<!Doctype html>
+<html class="no-js">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<title>企业网站管理后台</title>
+<link rel="stylesheet" href="__CSS__/style.css"/>
+<link rel="stylesheet" href="__CSS__/font-awesome.min.css"/>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__PUBLIC__/Laydate/laydate.js"></script>
+</head>
+<body>
+
+	<div class="place">
+	    <span>位置：</span>
+	    <ul class="placeul">
+		    <li><a href="#">首页</a></li>
+		    <li><a href="#">基本配置</a></li>
+		    <li><a href="#">站点配置</a></li>
+	    </ul>
+    </div>
+    
+    <div class="formbody">
+    
+    <div class="formtitle"><span>网站基本设置</span></div>
+    <form action="{:U('System/setsitedo')}" method="post" enctype="multipart/form-data">
+	    <ul class="forminfo">
+		    <li><label>网站名称：</label><input name="sitename" type="text" class="dfinput" value="{$siteinfo.sitename}" placeholder="请填写网站名称"/><i>例如：江苏七八九网络科技有限公司</i></li>
+		    <li><label>网站网址：</label><input name="siteurl" type="text" class="dfinput" value="{$siteinfo.siteurl}" placeholder="请填写网站网址"/><i>例如：www.js789.com.cn 不要加http://,末尾不要加/</i></li>
+		    <li><label>网站logo：</label><img src="__ROOT__{$siteinfo.sitelogo}" width="190" height="70" class="img-border radius-small padding-little" />&nbsp;&nbsp;<input name="sitelogo" type="file" /></li>
+		    <li><label>网站描述：</label><input name="sitedesc" type="text" class="dfinput" value="{$siteinfo.sitedesc}" placeholder="请填写网站描述"/><i>建议不能超过120个字符</i></li>
+		    <li><label>网站关键词：</label><input name="sitekeywords" type="text" class="dfinput" value="{$siteinfo.sitekeywords}" placeholder="请填写网站关键词"/><i>建议不能超过120个字符</i></li>
+		    <li><label>活动介绍：</label><textarea id="active_info" style="width:700px;height:300px;border:1px solid #cccccc;padding:10px;font-size:18px;" name="active_info"/>{$siteinfo.active_info}</textarea></li>
+		    <li><label>奖品设置：</label><textarea id="vip_info" style="width:700px;height:300px;border:1px solid #cccccc;padding:10px;font-size:18px;" name="vip_info"/>{$siteinfo.vip_info}</textarea></li>
+		    <li><label>活动规则：</label><textarea id="rule_info" style="width:700px;height:300px;border:1px solid #cccccc;padding:10px;font-size:18px;" name="rule_info"/>{$siteinfo.rule_info}</textarea></li>
+		    <li><label>投票规则：</label><textarea id="vote_rule" style="width:700px;height:300px;border:1px solid #cccccc;padding:10px;font-size:18px;" name="vote_rule"/>{$siteinfo.vote_rule}</textarea></li>
+		    <li><label>开启投票：</label><cite><input name="vote_status" type="radio" value="1" <if condition="$siteinfo.vote_status eq 1">checked="checked"</if>>开启&nbsp;&nbsp;&nbsp;&nbsp;<input name="vote_status" type="radio" value="0" <if condition="$siteinfo.vote_status eq 0">checked="checked"</if>>关闭</cite></li>
+		    <li><label>投票时间段：</label><cite><input name="vote_btime" style="width:200px;margin-right:10px;" type="text" class="dfinput" value="{$siteinfo.vote_btime|date='Y-m-d H:i:s',###}" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly/>&nbsp;<input name="vote_etime" style="width:200px;" type="text" class="dfinput" value="{$siteinfo.vote_etime|date='Y-m-d H:i:s',###}" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly/></cite></li>
+		    <li><label>签到时间段：</label><cite><input name="sign_btime" style="width:200px;margin-right:10px;" type="text" class="dfinput" value="{$siteinfo.sign_btime|date='Y-m-d H:i:s',###}" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly/>&nbsp;<input name="sign_etime" style="width:200px;" type="text" class="dfinput" value="{$siteinfo.sign_etime|date='Y-m-d H:i:s',###}" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly/></cite></li>
+		    <li><label>公示标题：</label><input name="gs_title" type="text" class="dfinput" value="{$siteinfo.gs_title}" placeholder="请填写公示标题"/></li>
+		    <li><label>公示内容：</label><textarea id="gs_content" style="width:700px;height:300px;border:1px solid #cccccc;padding:10px;font-size:18px;" name="gs_content"/>{$siteinfo.gs_content}</textarea></li>
+		    <li><label>开启公示：</label><cite><input name="gs_status" type="radio" value="1" <if condition="$siteinfo.gs_status eq 1">checked="checked"</if>>开启&nbsp;&nbsp;&nbsp;&nbsp;<input name="gs_status" type="radio" value="0" <if condition="$siteinfo.gs_status eq 0">checked="checked"</if>>关闭</cite></li>
+		    <li><label>网站备案号：</label><input name="siteicp" type="text" class="dfinput" value="{$siteinfo.siteicp}" placeholder="请填写网站备案号"/><i>例如：苏ICP备14010218号</i></li>
+		    <li><label>网站统计代码：</label><textarea name="sitecode" cols="" rows="" class="textinput" placeholder="请填写网站统计代码">{$siteinfo.sitecode}</textarea><i><a href="http://www.cnzz.com/" target="_blank">获取统计代码</a></i></li>
+		    <li><label>网站状态：</label><cite><input name="sitestatus" type="radio" value="1" <if condition="$siteinfo.sitestatus eq 1">checked="checked"</if>>开启&nbsp;&nbsp;&nbsp;&nbsp;<input name="sitestatus" type="radio" value="0" <if condition="$siteinfo.sitestatus eq 0">checked="checked"</if>>关闭</cite></li>
+		    <li><label>网站关闭提示：</label><textarea name="statusdesc" cols="" rows="" class="textinput" placeholder="请填写网站关闭提示">{$siteinfo.statusdesc}</textarea></li>
+		    <li><label>&nbsp;</label><input name="submit" type="submit" class="btn" value="确认保存"/></li>
+	    </ul>
+    </form>
+    
+    </div>
+
+<script src="__EDITOR__/kindeditor-min.js"></script>
+<script src="__EDITOR__/lang/zh_CN.js"></script>
+<script>
+var editor;
+KindEditor.ready(function(K) {
+        editor = K.create('#active_info', {
+                themeType : 'simple'
+        });
+        editor = K.create('#vip_info', {
+            themeType : 'simple'
+    	});
+        editor = K.create('#rule_info', {
+            themeType : 'simple'
+    	});
+        editor = K.create('#vote_rule', {
+            themeType : 'simple'
+    	});
+        editor = K.create('#gs_content', {
+            themeType : 'simple'
+    	});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<html class="no-js">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="{$siteinfo.sitedesc}">
+<meta name="keywords" content="{$siteinfo.sitekeywords}">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>{$siteinfo.sitename}-在线报名</title>
+<!-- Set render engine for 360 browser -->
+<meta name="renderer" content="webkit">
+<!-- No Baidu Siteapp-->
+<meta http-equiv="Cache-Control" content="no-siteapp"/>
+<!-- Add to homescreen for Chrome on Android -->
+<meta name="mobile-web-app-capable" content="yes">
+<!-- Add to homescreen for Safari on iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="webster"/>
+<meta name="msapplication-TileColor" content="#0e90d2">
+<link rel="stylesheet" href="__PUBLIC__/Static/Css/amazeui.min.css">
+<link rel="stylesheet" href="__PUBLIC__/Static/Css/app.css">
+<style>
+p{margin:0px;}
+input[type=file] {
+    display: none;
+}
+    .title{color:#FFFF00; background:#000000; text-align:center; font-size:24px; line-height:50px; font-weight:bold;}
+    .file{position:absolute; width:100%; font-size:90px;}
+    .filebtn{position:relative; width:150px;height:150px; color:#FFFFFF; background:#06980e; line-height:120px; text-align:center; cursor:pointer; border: 3px solid #cccccc;}
+    .filebtn:hover{background:#04bc0d;}
+    .showimg{margin:10px auto 10px auto; text-align:center;}
+
+</style>
+</head>
+<body>
+<section class="container"> 
+<section class="header">
+	<img style="max-width:200px;margin:0 auto" src="__PUBLIC__/Static/Images/index1.png" class="am-img-responsive am-animation-slide-top" alt=""/>
+	<img style="max-width:300px;margin:5px auto" src="__PUBLIC__/Static/Images/index2.png" class="am-img-responsive am-animation-scale-up" alt=""/>
+</section> 
+<section class="am-container am-animation-slide-left" style="max-width:85%;padding-top:20px;color:#fff">
+<form class="am-form am-form-horizontal" action="__SELF__" method="post" enctype="multipart/form-data" onsubmit="return Vaild()">
+  <div class="am-form-group">
+    <label for="name" class="am-u-sm-3 am-form-label">姓名：</label>
+    <div class="am-u-sm-9">
+      <input type="text" id="name" name="name" placeholder="请输入您的姓名">
+    </div>
+  </div>
+  <div class="am-form-group">
+    <label for="mynum" class="am-u-sm-3 am-form-label">号牌：</label>
+    <div class="am-u-sm-9">
+      <input type="text" id="mynum" name="mynum" placeholder="请输入您的号牌">
+    </div>
+  </div>
+  <div class="am-form-group">
+    <label for="phone" class="am-u-sm-3 am-form-label">手机：</label>
+    <div class="am-u-sm-9">
+      <input type="text" id="phone" name="phone" placeholder="请输入您的手机号码">
+    </div>
+  </div>
+  <div class="am-form-group">
+    <label for="touxiang" class="am-u-sm-2 am-form-label"></label>
+    <div class="am-u-sm-10" style="text-align:center">
+      <input type="file" class="file" id="img"><label for="img" title="JPG,GIF,PNG"><img id="chooseimg" style="width:145px;height:145px;" src="__PUBLIC__/Static/Images/upimg.png"></label>
+      <input type="hidden" id="touxiang" name="touxiang"><br>
+	  <input type="hidden" id="touxiang_big" name="touxiang_big"><br>
+      <button type="submit" class="am-btn am-btn-danger">&nbsp;&nbsp;提&nbsp;&nbsp;交&nbsp;&nbsp;</button>
+    </div>
+  </div>
+</form>
+
+</section>
+<section class="footer">
+	<img style="width:100%" src="__PUBLIC__/Static/Images/index3.png" class="am-img-responsive" alt=""/>
+</section> 
+</section> 
+
+<!-- js -->
+<script src="__PUBLIC__/Static/Js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/Static/Js/amazeui.min.js"></script>
+<script src="__PUBLIC__/Static/Js/app.js"></script>
+<script src="__PUBLIC__/Layer/layer.min.js"></script>
+<script>
+function Vaild(){
+    var name = document.getElementById("name").value;
+    var mynum = document.getElementById("mynum").value;
+    var phone = document.getElementById("phone").value;
+    //获取src
+   var touxiang = document.getElementById("touxiang").value;
+    if (name == '' || name == null || name == undefined) {
+		layer.msg('用户名不能为空！');
+		return false
+	}else if (mynum == '' || mynum == null || mynum == undefined) {
+		layer.msg('号牌不能为空！');
+		return false
+	}else if (phone == '' || phone == null || phone == undefined) {
+		layer.msg('手机号码不能为空！');
+		return false
+	}else if (touxiang == '' || touxiang == null || touxiang == undefined) {
+		layer.msg('请上传一张靓照！');
+		return false
+	}else{
+		return true;
+	}
+}
+</script>
+<script>
+function GetFileSize(fileid) {
+	 try {
+	 var fileSize = 0;
+	 //for IE
+	 if ($.support.msie) {
+	 //before making an object of ActiveXObject, 
+	 //please make sure ActiveX is enabled in your IE browser
+	 var objFSO = new ActiveXObject("Scripting.FileSystemObject"); var filePath = $("#" + fileid)[0].value;
+	 var objFile = objFSO.getFile(filePath);
+	 var fileSize = objFile.size; //size in kb
+	 fileSize = fileSize / 1048576; //size in mb 
+	 }
+	 //for FF, Safari, Opeara and Others
+	 else {
+	 fileSize = $("#" + fileid)[0].files[0].size //size in kb
+	 fileSize = fileSize / 1048576; //size in mb 
+	 }
+	 return fileSize;
+	 }
+	 catch (e) {
+	 alert("Error is :" + e);
+	 }
+	}
+window.onload = function(){
+    // 选择图片
+    document.getElementById('img').onchange = function(){
+    	var img = event.target.files[0];
+    	//检查文件大小
+    	if(GetFileSize('img')>3){
+    		layer.msg('最大上传1M靓照！');
+    	}else{
+            // 判断图片格式
+            if(!(img.type.indexOf('image')==0 && img.type && /\.(?:jpg|png|gif)$/.test(img.name)) ){
+                layer.msg('只能选择jpg,gif,png格式照片');
+                return ;
+            }
+            var reader = new FileReader();
+            reader.readAsDataURL(img);
+            reader.onload = function(e){ // reader onload start
+                // ajax 上传图片
+                layer.load(2,{shade: [0.8, '#ffffff'],shadeClose:false});
+                $.post("{:U('Index/serverimg')}", { img: e.target.result},function(ret){
+                    if(ret.img!=''){
+                    	document.getElementById('chooseimg').src=ret.img;
+                        //赋值给touxiang
+                        document.getElementById('touxiang').value=ret.img;
+						document.getElementById('touxiang_big').value=ret.img_big;
+                        layer.closeAll('loading');
+                    }else{
+                        alert('upload fail');
+                        layer.closeAll('loading');
+                    }
+                },'json');
+            }
+    	}
+    }
+  }
+</script>
+</body>
+</html>

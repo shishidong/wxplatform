@@ -1,0 +1,179 @@
+<!--
+编程中我们会遇到多少挫折？表放弃，沙漠尽头必是绿洲!
+---------------------------------------------------------------------------------------------------
+Title：企业网站管理系统
+Design：Webster 西瓜  Blog：http://www.580bang.com/  QQ:312549912
+CopyRight：江苏七八九网络科技有限公司
+Site：http://www.js789.com.cn/
+Desc：江苏七八九网络科技有限公司专注于微信运营，微信开发，企业网站制作，线下活动策划与运作！我们有专业的运营团队，在微信领域有着3年的运营沉淀经验！ 
+---------------------------------------------------------------------------------------------------
+-->
+<!Doctype html>
+<html class="no-js">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<title>企业网站管理后台</title>
+<link rel="stylesheet" href="__CSS__/style.css"/>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__LAYER__/layer.min.js"></script>
+</head>
+<body style="padding-bottom:20px;">
+<section class="place">
+   <span>位置：</span>
+   <ul class="placeul">
+	   <li><a href="#">首页</a></li>
+	   <li><a href="#">人员信息管理</a></li>
+	   <li><a href="#">列表</a></li>
+   </ul>
+</section>
+    
+<section class="rightinfo">
+<section style="line-height:40px;color:red;font-size:16px;">*人员信息删除操作不可逆！</section>
+<section class="tools">
+	<ul class="toolbar">
+	   <li><a href="#" onclick="javascript:excel()"><span><img src="__IMAGES__/t01.png" /></span>EXCEL批量导入</a></li>
+	   <li><a href="{:U('System/outtxt')}"><span><img src="__IMAGES__/t04.png" /></span>签到人员导出TXT</a></li>
+	   <li><a href="#" onclick="javascript:deleSeltedRecords()"><span><img src="__IMAGES__/t03.png" /></span>批量删除</a></li>
+   	</ul>
+</section>
+<!-- 列表 -->
+<table class="tablelist">
+	<thead>
+		<tr>
+		    <th><input type="checkbox" id="selAll" onclick="selectAll();" /></th>
+		    <th>编号</th>
+		    <th>姓名</th>
+		    <th>手机号码</th>
+		    <th>座位号</th>
+		    <th>公司名称</th>
+		    <th>邀请人</th>
+		    <th>邀请人手机</th>
+		    <th>签到时间</th>
+		    <th>状态</th>
+	    </tr>
+    </thead>
+    <tbody id="allcheck">
+    <form action="{:U('System/editVotesort')}" method="post" id="sortform">
+    <volist name="list" id="vo">
+	    <tr>
+	    	
+		    <td><input type="checkbox" name="checkAll" id="checkAll" value="{$vo.id}" onclick="setSelectAll();" <if condition="$vo.status eq 1">disabled="disabled"</if>/></td>
+		    <td>{$vo.id}</td>
+		    <td>{$vo.qd_name}</td>
+		    <td>{$vo.qd_phone}</td>
+		    <td>{$vo.qd_zuowei}</td>
+		    <td><if condition="$vo.qd_gongsi eq ''">暂无<else />{$vo.qd_gongsi}</if></td>
+		    <td>{$vo.qd_invite}</td>
+		    <td>{$vo.qd_invitephone}</td>
+		    <td><if condition="$vo.qd_time eq 0">未签到<else />{$vo.qd_time}</if></td>
+		    <td>{$vo.qd_status}</td>
+	    </tr> 
+	</volist>  
+	</form>     
+    </tbody>
+</table>
+<!-- 分页 -->
+<div class="clear"></div>
+<section class="manu">{$page}</section>
+</section>
+<script type="text/javascript">
+	$('.tablelist tbody tr:odd').addClass('odd');
+</script>
+<script> 
+//选中全选按钮，下面的checkbox全部选中 
+var selAll = document.getElementById("selAll"); 
+function selectAll() 
+{ 
+  var obj = document.getElementsByName("checkAll"); 
+  if(document.getElementById("selAll").checked == false) 
+  { 
+	  for(var i=0; i<obj.length; i++){ 
+	    //obj[i].checked=false; 
+	  	if (obj[i].type == "checkbox" && obj[i].disabled==false ){
+	      obj[i].checked = false;      
+	     }
+	  } 
+  }else{ 
+	  for(var i=0; i<obj.length; i++){	  
+	    //obj[i].checked=true; 
+		  if (obj[i].type == "checkbox" && obj[i].disabled==false){
+		      obj[i].checked = true;      
+		     }  
+	  }	
+  }  
+} 
+//当选中所有的时候，全选按钮会勾上 
+function setSelectAll() 
+{ 
+	var obj=document.getElementsByName("checkAll"); 
+	var count = obj.length; 
+	var selectCount = 0; 
+	
+	for(var i = 0; i < count; i++){ 
+		if(obj[i].checked == true) 
+		{ 
+		selectCount++;	
+		} 
+	} 
+	if(count == selectCount){	
+		document.all.selAll.checked = true; 
+	}else{ 
+		document.all.selAll.checked = false; 
+	} 
+} 
+//批量删除
+function deleSeltedRecords(){  
+        var chckBox = document.getElementsByName("checkAll");  
+        var num = chckBox.length;  
+        var ids = "";  
+        for(var index =0 ; index<num ; index++){  
+            if(chckBox[index].checked){  
+                ids += chckBox[index].value + ",";                
+            }  
+        } 
+         if(ids!=""){  
+            if(window.confirm("确定删除所选记录？")){  
+                $.ajax({
+                	type: "POST",
+                    url: '{:U("System/delqiandao")}',
+                    data: {ids:ids},
+                    beforeSend:function(){
+                    	jQuery("body").append("<div class='fullbg'></div>");
+                        jQuery(".fullbg").css("display","block");
+                     },
+                    success : function(data){
+                    	//隐藏加载动画
+                    	jQuery(".fullbg").css("display","none");
+                    	if(data=='success'){
+                    		location.reload();
+                    	}else{
+                    		alert("系统错误，删除失败");
+                    	}  
+                    },  
+                    error : function(data){  
+                        alert("系统错误，删除失败");  
+                    }  
+                });  
+            }  
+        }else{  
+            alert("请选择要删除的记录");  
+        } 
+}
+//批量审核
+function excel(){  
+	layer.open({
+	    type: 1,
+	    title: 'EXCEL批量导入',
+	    area: ['45%', '450px'],
+	    closeBtn: 1,
+	    skin: 'layui-layer-rim', //加上边框
+	    shadeClose: false,
+	    content: '<div style="text-align:center;padding:10px;font-size:24px;">请选择需要导入的Excel文件：<br><br><br><br><form id="myform" action="{:U("System/importexcel")}" method="post" enctype="multipart/form-data"><input type="file" name="exceltpl"><br><br><br><br><input type="submit" class="btn" value="确定导入"/></form></div>'
+	});
+}
+</script> 
+</body>
+</html>

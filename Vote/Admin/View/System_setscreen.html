@@ -1,0 +1,76 @@
+<!--
+编程中我们会遇到多少挫折？表放弃，沙漠尽头必是绿洲!
+---------------------------------------------------------------------------------------------------
+Title：网络投票管理系统
+Design：Webster 西瓜  Blog：http://www.580bang.com/  QQ:312549912
+CopyRight：江苏七八九网络科技有限公司
+Site：http://www.js789.com.cn/
+Desc：江苏七八九网络科技有限公司专注于微信运营，微信开发，企业网站制作，线下活动策划与运作！我们有专业的运营团队，在微信领域有着3年的运营沉淀经验！ 
+---------------------------------------------------------------------------------------------------
+-->
+<!Doctype html>
+<html class="no-js">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<title>企业网站管理后台</title>
+<link rel="stylesheet" href="__CSS__/style.css"/>
+<link rel="stylesheet" href="__CSS__/font-awesome.min.css"/>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__PUBLIC__/Laydate/laydate.js"></script>
+</head>
+<body>
+
+	<div class="place">
+	    <span>位置：</span>
+	    <ul class="placeul">
+		    <li><a href="#">首页</a></li>
+		    <li><a href="#">基本配置</a></li>
+		    <li><a href="#">大屏设置</a></li>
+	    </ul>
+    </div>
+    
+    <div class="formbody">
+    
+    <div class="formtitle"><span>大屏设置</span></div>
+    <form action="__SELF__" method="post" enctype="multipart/form-data">
+	    <ul class="forminfo">
+		    <li><label>大屏LOGO：</label><img src="__ROOT__{$screen.screen_logo}" width="190" height="70" class="img-border radius-small padding-little" />&nbsp;&nbsp;<input name="screen_logo" type="file" /></li>
+		    <li><label>音乐网址：</label><input name="screen_music" type="text" class="dfinput" value="{$screen.screen_music}" placeholder="请填写网站描述"/><i>建议不能超过120个字符</i></li>
+		    <li><label>视频网址：</label><input name="screen_video" type="text" class="dfinput" value="{$screen.screen_video}" placeholder="请填写网站关键词"/><i>建议不能超过120个字符</i></li>
+		    <li><label>开启音乐：</label><cite><input name="is_music" type="radio" value="1" <if condition="$screen['is_music'] eq 1">checked="checked"</if>>开启&nbsp;&nbsp;&nbsp;&nbsp;<input name="is_music" type="radio" value="0" <if condition="$screen['is_music'] eq 0">checked="checked"</if>>关闭</cite></li>
+		    <li><label>开启视频：</label><cite><input name="is_video" type="radio" value="1" <if condition="$screen['is_video'] eq 1">checked="checked"</if>>开启&nbsp;&nbsp;&nbsp;&nbsp;<input name="is_video" type="radio" value="0" <if condition="$screen['is_video'] eq 0">checked="checked"</if>>关闭</cite></li>
+		    <li><label>开启大屏：</label><cite><input name="is_screen" type="radio" value="1" <if condition="$screen['is_screen'] eq 1">checked="checked"</if>>开启&nbsp;&nbsp;&nbsp;&nbsp;<input name="is_screen" type="radio" value="0" <if condition="$screen['is_screen'] eq 0">checked="checked"</if>>关闭</cite></li>
+		    
+		    <li><label>&nbsp;</label><input name="submit" type="submit" class="btn" value="确认保存"/></li>
+	    </ul>
+    </form>
+    
+    </div>
+
+<script src="__EDITOR__/kindeditor-min.js"></script>
+<script src="__EDITOR__/lang/zh_CN.js"></script>
+<script>
+var editor;
+KindEditor.ready(function(K) {
+        editor = K.create('#active_info', {
+                themeType : 'simple'
+        });
+        editor = K.create('#vip_info', {
+            themeType : 'simple'
+    	});
+        editor = K.create('#rule_info', {
+            themeType : 'simple'
+    	});
+        editor = K.create('#vote_rule', {
+            themeType : 'simple'
+    	});
+        editor = K.create('#gs_content', {
+            themeType : 'simple'
+    	});
+});
+</script>
+</body>
+</html>
